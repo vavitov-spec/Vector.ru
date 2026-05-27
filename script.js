@@ -41,3 +41,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+  // === Build Story Animation ===
+  const buildSection = document.querySelector('.build-section');
+  if (buildSection) {
+    const layers = [1,2,3].map(i => document.getElementById('layer-'+i));
+    const labels = [1,2,3].map(i => document.getElementById('label-'+i));
+
+    function updateBuild() {
+      const rect = buildSection.getBoundingClientRect();
+      const total = buildSection.offsetHeight - window.innerHeight;
+      const p = Math.max(0, Math.min(1, -rect.top / total));
+
+      if (p < 0.33) {
+        const t = p / 0.33;
+        layers[0].style.opacity = 1;
+        layers[1].style.opacity = 0;
+        layers[2].style.opacity = 0;
+        labels[0].style.opacity = 1;
+        labels[1].style.opacity = 0;
+        labels[2].style.opacity = 0;
+      } else if (p < 0.66) {
+        const t = (p - 0.33) / 0.33;
+        layers[0].style.opacity = 1;
+        layers[1].style.opacity = t;
+        layers[2].style.opacity = 0;
+        labels[0].style.opacity = 1 - t;
+        labels[1].style.opacity = t;
+        labels[2].style.opacity = 0;
+      } else {
+        const t = (p - 0.66) / 0.34;
+        layers[0].style.opacity = 1;
+        layers[1].style.opacity = 1;
+        layers[2].style.opacity = t;
+        labels[0].style.opacity = 0;
+        labels[1].style.opacity = 1 - t;
+        labels[2].style.opacity = t;
+      }
+    }
+
+    window.addEventListener('scroll', updateBuild, {passive: true});
+    updateBuild();
+  }
