@@ -11,7 +11,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <div class="logo">
-<img src="vector-logo-B1Wfob5Y.png" alt="Логотип" style="height: 50px;">
+        <img src="vector-logo-B1Wfob5Y.png" alt="Логотип" style="height: 50px;">
       </div>
       <nav class="main-nav">
         <a href="#services">Услуги</a>
@@ -23,37 +23,42 @@
     </div>
   </header>
   <main>
-    <section class="hero section reveal" id="home">
-      <div class="container hero-inner">
-        <div class="hero-content">
-          <h1>Проектирование, строительство и управление проектами полного цикла</h1>
-          <p>Реализуем сложные объекты по всей России: от концепции и проектной документации до ввода в эксплуатацию.</p>
-          <ul class="hero-highlights">
-            <li>15+ лет опыта в строительстве</li>
-            <li>250&nbsp;000 м² реализованных проектов</li>
-            <li>Генподряд, техзаказчик, управление проектами</li>
-          </ul>
-          <div class="hero-actions">
-            <a href="#contacts" class="btn btn-primary">Рассчитать проект</a>
-            <a href="#projects" class="btn btn-secondary">Смотреть проекты</a>
-          </div>
-        </div>
-        <div class="hero-image">
-          <div class="image-placeholder"><span>Фото/рендер вашего объекта</span></div>
-        </div>
-      </div>
-    </section>
 
-<section class="build-section">
-    <div class="build-sticky">
-      <img src="frame.jpg" class="build-layer" id="layer-1">
-      <img src="networks.jpg" class="build-layer" id="layer-2">
-      <img src="facade.jpg" class="build-layer" id="layer-3">
-      <div class="build-label" id="label-1">Каркас здания</div>
-      <div class="build-label" id="label-2">Инженерные сети</div>
-      <div class="build-label" id="label-3">Готовый фасад</div>
+    <!-- HERO с анимацией прокрутки в правой рамке -->
+    <div class="hero-scroll-wrapper" id="home">
+      <div class="hero-sticky">
+        <section class="hero section reveal">
+          <div class="container hero-inner">
+            <div class="hero-content">
+              <h1>Проектирование, строительство и управление проектами полного цикла</h1>
+              <p>Реализуем сложные объекты по всей России: от концепции и проектной документации до ввода в эксплуатацию.</p>
+              <ul class="hero-highlights">
+                <li>15+ лет опыта в строительстве</li>
+                <li>250&nbsp;000 м² реализованных проектов</li>
+                <li>Генподряд, техзаказчик, управление проектами</li>
+              </ul>
+              <div class="hero-actions">
+                <a href="#contacts" class="btn btn-primary">Рассчитать проект</a>
+                <a href="#projects" class="btn btn-secondary">Смотреть проекты</a>
+              </div>
+            </div>
+            <div class="hero-image">
+              <div class="hero-frame">
+                <img src="frame.jpg"    class="hero-layer" id="hero-layer-1">
+                <img src="networks.jpg" class="hero-layer" id="hero-layer-2">
+                <img src="facade.jpg"   class="hero-layer" id="hero-layer-3">
+                <div class="hero-label" id="hero-label-1">Каркас здания</div>
+                <div class="hero-label" id="hero-label-2">Инженерные сети</div>
+                <div class="hero-label" id="hero-label-3">Готовый фасад</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
-  </section>
+    <!-- конец HERO -->
+
+    <div id="services" class="section">
       <div class="container">
         <h2 class="section-title">Услуги</h2>
         <p class="section-subtitle">Берём на себя всю вертикаль: от предпроектной проработки до строительства «под ключ» и управления проектом.</p>
@@ -91,7 +96,7 @@
           </article>
         </div>
       </div>
-    </section>
+    </div>
 
     <section class="section section-dark reveal" id="projects">
       <div class="container">
