@@ -41,44 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === Hero Frame Scroll Animation ===
-  const wrapper = document.querySelector('.hero-scroll-wrapper');
-  if (wrapper) {
-    const layers = [1,2,3].map(i => document.getElementById('hero-layer-' + i));
-    const labels = [1,2,3].map(i => document.getElementById('hero-label-' + i));
+  // === Hero Frame Auto Loop Animation ===
+  const layers = [1,2,3].map(i => document.getElementById('hero-layer-' + i));
+  const labels = [1,2,3].map(i => document.getElementById('hero-label-' + i));
 
-    function updateHero() {
-      const rect = wrapper.getBoundingClientRect();
-      const total = wrapper.offsetHeight - window.innerHeight;
-      const p = Math.max(0, Math.min(1, -rect.top / total));
+  if (layers[0]) {
+    // Последовательность: 0 → 1 → 2 → 1 → 0 → ...
+    const sequence = [0, 1, 2, 1];
+    let current = 0;
 
-      if (p < 0.33) {
-        layers[0].style.opacity = 1;
-        layers[1].style.opacity = 0;
-        layers[2].style.opacity = 0;
-        labels[0].style.opacity = 1;
-        labels[1].style.opacity = 0;
-        labels[2].style.opacity = 0;
-      } else if (p < 0.66) {
-        const t = (p - 0.33) / 0.33;
-        layers[0].style.opacity = 1;
-        layers[1].style.opacity = t;
-        layers[2].style.opacity = 0;
-        labels[0].style.opacity = 1 - t;
-        labels[1].style.opacity = t;
-        labels[2].style.opacity = 0;
-      } else {
-        const t = (p - 0.66) / 0.34;
-        layers[0].style.opacity = 1;
-        layers[1].style.opacity = 1;
-        layers[2].style.opacity = t;
-        labels[0].style.opacity = 0;
-        labels[1].style.opacity = 1 - t;
-        labels[2].style.opacity = t;
-      }
+    function showSlide(idx) {
+      layers.forEach((l, i) => l.style.opacity = i === idx ? 1 : 0);
+      labels.forEach((l, i) => l.style.opacity = i === idx ? 1 : 0);
     }
 
-    window.addEventListener('scroll', updateHero, { passive: true });
-    updateHero();
+    showSlide(sequence[0]);
+
+    setInterval(() => {
+      current = (current + 1) % sequence.length;
+      showSlide(sequence[current]);
+    }, 2000);
   }
 });
