@@ -36,8 +36,9 @@ body{
 .btn-secondary:hover{background:rgba(15,23,42,1);border-color:#e5e7eb}
 .btn-full{width:100%}
 .btn-header{font-size:13px}
-.hero{color:#e5e7eb;padding-top:96px;padding-bottom:96px;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:-200px;background:radial-gradient(circle at top left,rgba(37,99,235,0.25),transparent 50%),radial-gradient(circle at bottom right,rgba(8,47,73,0.9),transparent 55%);pointer-events:none}
+/* ВАЖНО: нет overflow:hidden — иначе ломается position:sticky внутри */
+.hero{color:#e5e7eb;position:relative;width:100%}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(37,99,235,0.25),transparent 50%),radial-gradient(circle at bottom right,rgba(8,47,73,0.9),transparent 55%);pointer-events:none;z-index:0}
 .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.4fr);gap:48px;align-items:center}
 .hero-content h1{font-size:36px;line-height:1.2;margin:0 0 16px}
 .hero-content p{margin:0 0 20px;font-size:15px;color:#cbd5f5}
@@ -91,7 +92,6 @@ body{
   .projects-grid{grid-template-columns:minmax(0,1fr)}
   .about-grid,.contacts-grid{grid-template-columns:minmax(0,1fr)}
   .main-nav,.btn-header{display:none}
-  .hero{padding-top:72px}
 }
 @media(max-width:640px){
   .section{padding:56px 0}
@@ -101,12 +101,77 @@ body{
   .section-title{font-size:26px}
 }
 
+/* === Hero Frame Scroll Animation === */
 
-/* === Build Story Animation === */
-.build-section{height:400vh}
-.build-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
-.build-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
-#layer-1{opacity:1}
-.build-label{position:absolute;bottom:60px;left:60px;color:#fff;font-size:2.2rem;font-weight:700;opacity:0;text-shadow:0 2px 16px rgba(0,0,0,0.6);transition:opacity 0.3s ease;pointer-events:none}
-#label-1{opacity:1}
-@media(max-width:640px){.build-label{font-size:1.4rem;bottom:40px;left:24px}}
+/* КЛЮЧЕВОЕ ПРАВИЛО: ни .hero-scroll-wrapper, ни .hero-sticky
+   не должны иметь overflow:hidden/auto/scroll —
+   иначе position:sticky перестаёт работать! */
+
+.hero-scroll-wrapper{
+  height: 400vh;
+  position: relative;
+  /* overflow: visible (по умолчанию) — не менять! */
+}
+.hero-sticky{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* overflow: НЕТ hidden здесь! */
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg,#0b1120 0%,#020617 40%,#111827 100%);
+}
+.hero-sticky .hero{
+  width: 100%;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+/* Рамка — здесь overflow:hidden нормально, она сама не sticky */
+.hero-frame{
+  position: relative;
+  border-radius: 22px;
+  border: 1px solid rgba(148,163,184,0.35);
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4/3;
+  box-shadow: var(--shadow-soft);
+  background: #020617;
+}
+/* Слои: все поверх друг друга, opacity=0 по умолчанию */
+.hero-layer{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#hero-layer-1{ opacity: 1; }
+/* Подписи */
+.hero-label{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  opacity: 0;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  background: rgba(15,23,42,0.75);
+  padding: 6px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+#hero-label-1{ opacity: 1; }
+@media(max-width:960px){
+  .hero-frame{ aspect-ratio: 16/9; }
+}
+@media(max-width:640px){
+  .hero-label{ font-size:0.9rem; bottom:12px; left:12px; }
+  .hero-frame{ aspect-ratio: 4/3; }
+}

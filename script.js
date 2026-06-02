@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Reveal on scroll
   const revealElements = document.querySelectorAll(".reveal");
-
   if ("IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       (entries, obs) => {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     revealElements.forEach((el) => el.classList.add("reveal--visible"));
   }
 
-  // Smooth scroll for nav links
+  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", (e) => {
       const target = document.querySelector(anchor.getAttribute("href"));
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Form submit handler
+  // Form submit
   const form = document.querySelector(".contacts-form");
   if (form) {
     form.addEventListener("submit", (e) => {
@@ -40,22 +40,19 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.opacity = "0.7";
     });
   }
-});
 
+  // === Hero Frame Scroll Animation ===
+  const wrapper = document.querySelector('.hero-scroll-wrapper');
+  if (wrapper) {
+    const layers = [1,2,3].map(i => document.getElementById('hero-layer-' + i));
+    const labels = [1,2,3].map(i => document.getElementById('hero-label-' + i));
 
-  // === Build Story Animation ===
-  const buildSection = document.querySelector('.build-section');
-  if (buildSection) {
-    const layers = [1,2,3].map(i => document.getElementById('layer-'+i));
-    const labels = [1,2,3].map(i => document.getElementById('label-'+i));
-
-    function updateBuild() {
-      const rect = buildSection.getBoundingClientRect();
-      const total = buildSection.offsetHeight - window.innerHeight;
+    function updateHero() {
+      const rect = wrapper.getBoundingClientRect();
+      const total = wrapper.offsetHeight - window.innerHeight;
       const p = Math.max(0, Math.min(1, -rect.top / total));
 
       if (p < 0.33) {
-        const t = p / 0.33;
         layers[0].style.opacity = 1;
         layers[1].style.opacity = 0;
         layers[2].style.opacity = 0;
@@ -81,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    window.addEventListener('scroll', updateBuild, {passive: true});
-    updateBuild();
+    window.addEventListener('scroll', updateHero, { passive: true });
+    updateHero();
   }
+});
