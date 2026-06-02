@@ -108,15 +108,9 @@ body{
    иначе position:sticky перестаёт работать! */
 
 .hero-scroll-wrapper{
-  height: 400vh;
   position: relative;
-  /* overflow: visible (по умолчанию) — не менять! */
 }
 .hero-sticky{
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  /* overflow: НЕТ hidden здесь! */
   display: flex;
   align-items: center;
   background: linear-gradient(135deg,#0b1120 0%,#020617 40%,#111827 100%);
@@ -124,7 +118,6 @@ body{
 .hero-sticky .hero{
   width: 100%;
   padding: 0;
-  height: 100vh;
   display: flex;
   align-items: center;
 }
