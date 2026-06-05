@@ -1,4 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // === Hero Image Scale on Scroll ===
+  const heroWrapper = document.querySelector('.hero-scroll-wrapper');
+  const heroFrame = document.querySelector('.hero-frame');
+  if (heroWrapper && heroFrame) {
+    function updateHeroScale() {
+      const rect = heroWrapper.getBoundingClientRect();
+      const total = heroWrapper.offsetHeight - window.innerHeight;
+      const p = Math.max(0, Math.min(1, -rect.top / total));
+      const scale = 0.85 + 0.15 * p;       // от 0.85 до 1.0
+      const translateY = 40 * (1 - p);    // от 40px до 0px
+      heroFrame.querySelector('img').style.transform = `scale(${scale}) translateY(${translateY}px)`;
+    }
+    window.addEventListener('scroll', updateHeroScale, { passive: true });
+    updateHeroScale();
+  }
+
   // Reveal on scroll
   const revealElements = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
@@ -41,25 +57,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === Hero Frame Auto Loop Animation ===
-  const layers = [1,2,3].map(i => document.getElementById('hero-layer-' + i));
-  const labels = [1,2,3].map(i => document.getElementById('hero-label-' + i));
-
-  if (layers[0]) {
-    // Последовательность: 0 → 1 → 2 → 1 → 0 → ...
-    const sequence = [0, 1, 2, 1];
-    let current = 0;
-
-    function showSlide(idx) {
-      layers.forEach((l, i) => l.style.opacity = i === idx ? 1 : 0);
-      labels.forEach((l, i) => l.style.opacity = i === idx ? 1 : 0);
-    }
-
-    showSlide(sequence[0]);
-
-    setInterval(() => {
-      current = (current + 1) % sequence.length;
-      showSlide(sequence[current]);
-    }, 2000);
-  }
 });
