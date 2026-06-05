@@ -108,9 +108,13 @@ body{
    иначе position:sticky перестаёт работать! */
 
 .hero-scroll-wrapper{
+  height: 250vh;
   position: relative;
 }
 .hero-sticky{
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   align-items: center;
   background: linear-gradient(135deg,#0b1120 0%,#020617 40%,#111827 100%);
@@ -118,49 +122,28 @@ body{
 .hero-sticky .hero{
   width: 100%;
   padding: 0;
+  height: 100vh;
   display: flex;
   align-items: center;
 }
 /* Рамка — здесь overflow:hidden нормально, она сама не sticky */
 .hero-frame{
   position: relative;
-  border-radius: 22px;
-  border: 1px solid rgba(148,163,184,0.35);
   overflow: hidden;
   width: 100%;
   aspect-ratio: 4/3;
-  box-shadow: var(--shadow-soft);
-  background: #020617;
+  background: transparent;
 }
-/* Слои: все поверх друг друга, opacity=0 по умолчанию */
-.hero-layer{
-  position: absolute;
-  inset: 0;
+.hero-main-img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  object-fit: contain;
+  display: block;
+  transform: scale(0.85) translateY(40px);
+  transform-origin: center center;
+  transition: transform 0.05s linear;
+  will-change: transform;
 }
-#hero-layer-1{ opacity: 1; }
-/* Подписи */
-.hero-label{
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
-  opacity: 0;
-  text-shadow: 0 2px 16px rgba(0,0,0,0.6);
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  background: rgba(15,23,42,0.75);
-  padding: 6px 14px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-#hero-label-1{ opacity: 1; }
 @media(max-width:960px){
   .hero-frame{ aspect-ratio: 16/9; }
 }
