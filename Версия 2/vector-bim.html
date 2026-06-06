@@ -1362,6 +1362,247 @@
     66%, 93% { transform: rotateX(-240deg); }
     100%     { transform: rotateX(-360deg); }
   }
+
+  /* ── THREE PILLARS ── */
+  #pillars {
+    padding: 8rem 5%;
+    background: var(--dark2);
+    position: relative;
+    overflow: clip; /* clip не создаёт scroll-context, карточки могут вылетать за край */
+  }
+
+  .pillars-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .pillars-bg::before {
+    content: '';
+    position: absolute;
+    inset: -100px;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: pillars-grid 25s linear infinite;
+    opacity: 0.7;
+  }
+
+  .pillars-bg::after {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity: 0.05;
+    top: -200px; right: -50px;
+    animation: blob-float 10s ease-in-out infinite;
+  }
+
+  @keyframes pillars-grid {
+    from { transform: translateY(0) translateX(0); }
+    to   { transform: translateY(60px) translateX(60px); }
+  }
+
+  @keyframes blob-float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.05; }
+    50%       { transform: translateY(-50px) scale(1.15); opacity: 0.09; }
+  }
+
+  .pillars-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+  }
+
+  .text-accent { color: var(--accent); }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .pillar-card {
+    position: relative;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+                transform 0.8s cubic-bezier(0.16,1,0.3,1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+  }
+
+  .pillar-card.from-left  { transform: translateX(-70px) translateY(30px); }
+  .pillar-card.from-right { transform: translateX(70px)  translateY(30px); }
+
+  .pillar-card.animated,
+  .pillar-card.from-left.animated,
+  .pillar-card.from-right.animated {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pillar-card:hover {
+    box-shadow: 0 32px 80px rgba(0,0,0,0.28), 0 0 0 1px var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Scan-line sweep on hover */
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pillar-card:hover::before {
+    animation: pillar-scan 0.55s ease-out forwards;
+  }
+
+  @keyframes pillar-scan {
+    0%   { top: 0;    opacity: 1;   }
+    100% { top: 100%; opacity: 0;   }
+  }
+
+  .pillar-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 60% 20%, var(--accent) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+
+  .pillar-card:hover .pillar-glow { opacity: 0.07; }
+
+  .pillar-icon-wrap {
+    position: relative;
+    width: 72px; height: 72px;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pillar-icon-bg {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--accent) 0%, transparent 100%);
+    opacity: 0.12;
+    transition: opacity 0.3s, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .pillar-card:hover .pillar-icon-bg {
+    opacity: 0.22;
+    transform: rotate(8deg) scale(1.12);
+  }
+
+  .pillar-icon {
+    font-size: 2.2rem;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), filter 0.3s;
+  }
+
+  .pillar-card:hover .pillar-icon {
+    transform: scale(1.3) translateY(-4px);
+    filter: drop-shadow(0 6px 14px var(--accent));
+  }
+
+  .pillar-icon-ring {
+    position: absolute;
+    inset: -7px;
+    border-radius: 22px;
+    border: 1.5px solid var(--accent);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.35s, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .pillar-card:hover .pillar-icon-ring {
+    opacity: 0.5;
+    transform: scale(1.08);
+  }
+
+  .pillar-card h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar-card > p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .pillar-list {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+
+  .pillar-list li {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s, padding-left 0.25s;
+  }
+
+  .pillar-list li:last-child { border-bottom: none; }
+
+  .pillar-list li::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .pillar-card:hover .pillar-list li { color: var(--text); padding-left: 0.3rem; }
+  .pillar-card:hover .pillar-list li::before { transform: scale(1.5); }
+
+  .pillar-num {
+    font-size: 6rem;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: 0.05;
+    position: absolute;
+    bottom: -1rem;
+    right: 1.25rem;
+    line-height: 1;
+    letter-spacing: -4px;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .pillar-card:hover .pillar-num { opacity: 0.11; transform: scale(1.06) translateY(-6px); }
+
+  @media (max-width: 900px) {
+    .pillars-grid { grid-template-columns: 1fr; }
+  }
 </style>
 <script>
   history.scrollRestoration = 'manual';
@@ -1521,6 +1762,69 @@
         <div class="stat-label">Регионов РФ</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── THREE PILLARS ── -->
+<section id="pillars">
+  <div class="pillars-bg"></div>
+  <div class="pillars-header reveal">
+    <p class="section-label">Направления</p>
+    <h2 class="section-title">Три направления —<br><span class="text-accent">единый результат</span></h2>
+  </div>
+  <div class="pillars-grid">
+
+    <div class="pillar-card from-left" data-delay="0">
+      <div class="pillar-glow"></div>
+      <div class="pillar-icon-wrap">
+        <div class="pillar-icon-bg"></div>
+        <div class="pillar-icon">📊</div>
+        <div class="pillar-icon-ring"></div>
+      </div>
+      <h3>Управление проектами</h3>
+      <p>Планирование, контроль сроков и бюджета, координация всех участников. BIM-среда как единый источник правды для проекта.</p>
+      <ul class="pillar-list">
+        <li>4D/5D BIM-планирование</li>
+        <li>Контроль качества и рисков</li>
+        <li>Отчётность в реальном времени</li>
+      </ul>
+      <div class="pillar-num">01</div>
+    </div>
+
+    <div class="pillar-card" data-delay="160">
+      <div class="pillar-glow"></div>
+      <div class="pillar-icon-wrap">
+        <div class="pillar-icon-bg"></div>
+        <div class="pillar-icon">📐</div>
+        <div class="pillar-icon-ring"></div>
+      </div>
+      <h3>Проектирование</h3>
+      <p>BIM-моделирование всех разделов с координацией систем и автоматическим выпуском рабочей документации из единой модели.</p>
+      <ul class="pillar-list">
+        <li>3D BIM LOD 200–500</li>
+        <li>Clash-координация</li>
+        <li>Рабочая документация IFC</li>
+      </ul>
+      <div class="pillar-num">02</div>
+    </div>
+
+    <div class="pillar-card from-right" data-delay="320">
+      <div class="pillar-glow"></div>
+      <div class="pillar-icon-wrap">
+        <div class="pillar-icon-bg"></div>
+        <div class="pillar-icon">🏗️</div>
+        <div class="pillar-icon-ring"></div>
+      </div>
+      <h3>Строительство</h3>
+      <p>Генеральный подряд и монтаж инженерных систем по BIM-модели с передачей as-built документации заказчику при сдаче.</p>
+      <ul class="pillar-list">
+        <li>Генеральный подряд</li>
+        <li>Монтаж систем МКПО</li>
+        <li>As-Built документация</li>
+      </ul>
+      <div class="pillar-num">03</div>
+    </div>
+
   </div>
 </section>
 
@@ -2016,6 +2320,39 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 setTimeout(() => {
   animateCounters(document.querySelectorAll('#hero [data-target]'));
 }, 300);
+
+// ── PILLARS: scroll entrance + 3D tilt ──
+const pillarsGrid = document.querySelector('.pillars-grid');
+if (pillarsGrid) {
+  const pillarsObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.pillar-card').forEach(card => {
+        const delay = parseInt(card.dataset.delay || 0);
+        setTimeout(() => card.classList.add('animated'), delay);
+      });
+      pillarsObs.unobserve(entry.target);
+    });
+  }, { threshold: 0.15 });
+  pillarsObs.observe(pillarsGrid);
+}
+
+document.querySelectorAll('.pillar-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = `perspective(900px) rotateY(${x*12}deg) rotateX(${-y*12}deg) scale(1.02) translateZ(6px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform 0.55s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s, border-color 0.35s, opacity 0.35s';
+    card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1) translateZ(0)';
+    setTimeout(() => {
+      card.style.transform = '';
+      card.style.transition = '';
+    }, 560);
+  });
+});
 
 // ── FAQ TOGGLE ──
 function toggleFaq(btn) {
