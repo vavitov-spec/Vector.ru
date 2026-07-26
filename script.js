@@ -15,6 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
     updateHeroScale();
   }
 
+  // === Вращающееся слово в hero (fade + blur) ===
+  const rotator = document.querySelector(".hero-rotator__word");
+  if (rotator) {
+    const words = ["Проектирование", "Строительство", "Управление проектами"];
+    let index = 0;
+    setInterval(() => {
+      rotator.classList.add("is-hidden");
+      setTimeout(() => {
+        index = (index + 1) % words.length;
+        rotator.textContent = words[index];
+        rotator.classList.remove("is-hidden");
+      }, 500); // ждём завершения затухания
+    }, 2600);
+  }
+
   // Reveal on scroll
   const revealElements = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {

@@ -41,6 +41,26 @@ body{
 .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(37,99,235,0.25),transparent 50%),radial-gradient(circle at bottom right,rgba(8,47,73,0.9),transparent 55%);pointer-events:none;z-index:0}
 .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.4fr);gap:48px;align-items:center}
 .hero-content h1{font-size:36px;line-height:1.2;margin:0 0 16px}
+/* === Вращающееся слово (fade + blur) === */
+.hero-rotator{display:inline-block;min-height:1.2em}
+.hero-rotator__word{
+  display:inline-block;
+  background:linear-gradient(135deg,#60a5fa,#818cf8);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  transition:opacity 0.5s ease,filter 0.5s ease,transform 0.5s ease;
+  will-change:opacity,filter,transform;
+}
+.hero-rotator__word.is-hidden{
+  opacity:0;
+  filter:blur(12px);
+  transform:translateY(6px);
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-rotator__word{transition:opacity 0.3s ease}
+  .hero-rotator__word.is-hidden{filter:none;transform:none}
+}
 .hero-content p{margin:0 0 20px;font-size:15px;color:#cbd5f5}
 .hero-highlights{list-style:none;padding:0;margin:0 0 24px;display:flex;flex-wrap:wrap;gap:10px;font-size:13px}
 .hero-highlights li{padding:6px 12px;border-radius:999px;background:rgba(15,23,42,0.85);border:1px solid rgba(148,163,184,0.5);color:#e5e7eb}
